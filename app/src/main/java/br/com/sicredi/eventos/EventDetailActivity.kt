@@ -6,7 +6,6 @@ import android.provider.CalendarContract
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.snackbar.Snackbar
 
 class EventDetailActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

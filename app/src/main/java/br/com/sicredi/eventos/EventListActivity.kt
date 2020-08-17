@@ -16,7 +16,6 @@ import br.com.sicredi.eventos.glide.GlideApp
 import br.com.sicredi.eventos.model.Event
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_event_list.*
-import kotlinx.android.synthetic.main.event_list_content.*
 
 class EventListActivity : AppCompatActivity() {
 

@@ -4,19 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
-import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import br.com.sicredi.eventos.api.EventApiService
 import br.com.sicredi.eventos.glide.GlideApp
 import br.com.sicredi.eventos.model.Event
-import com.google.android.material.appbar.CollapsingToolbarLayout
 import com.google.android.material.snackbar.Snackbar
-import com.google.gson.internal.bind.util.ISO8601Utils.format
 import kotlinx.android.synthetic.main.activity_event_detail.*
 import kotlinx.android.synthetic.main.event_detail.view.*
-import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
