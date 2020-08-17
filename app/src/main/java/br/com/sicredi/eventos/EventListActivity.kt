@@ -2,34 +2,24 @@ package br.com.sicredi.eventos
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.widget.NestedScrollView
 import androidx.recyclerview.widget.RecyclerView
 import br.com.sicredi.eventos.api.EventApiService
+import br.com.sicredi.eventos.glide.GlideApp
 import br.com.sicredi.eventos.model.Event
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.android.synthetic.main.activity_event_list.*
+import kotlinx.android.synthetic.main.event_list_content.*
 
-/**
- * An activity representing a list of Pings. This activity
- * has different presentations for handset and tablet-size devices. On
- * handsets, the activity presents a list of items, which when touched,
- * lead to a [EventDetailActivity] representing
- * item details. On tablets, the activity presents the list of items and
- * item details side-by-side using two vertical panes.
- */
 class EventListActivity : AppCompatActivity() {
 
-    /**
-     * Whether or not the activity is in two-pane mode, i.e. running on a tablet
-     * device.
-     */
     private var twoPane: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,16 +30,7 @@ class EventListActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
         toolbar.title = title
 
-        findViewById<FloatingActionButton>(R.id.fab).setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
-        }
-
         if (findViewById<NestedScrollView>(R.id.event_detail_container) != null) {
-            // The detail container view will be present only in the
-            // large-screen layouts (res/values-w900dp).
-            // If this view is present, then the
-            // activity should be in two-pane mode.
             twoPane = true
         }
 
@@ -61,20 +42,22 @@ class EventListActivity : AppCompatActivity() {
         val activity = this
         val foregroundInterface = object : ForegroundInterface<List<Event>>{
             override fun preStartBackgroundExecute() {
-                Log.d("GetEventList", "Tentativa de contactar o servidor")
+                frameLayout.visibility = View.INVISIBLE
+                pb_loading_event.show()
             }
 
             override fun onSuccessBackgroundExecute(result: List<Event>?) {
-                Log.d("GetEventList", "Sucesso")
                 if (result != null) list = result
             }
 
             override fun onFailureBackgroundExecute(throwable: Throwable?) {
-                Log.e("GetEventList", "Falha: " + throwable?.message)
+                throwable?.printStackTrace()
+                Snackbar.make(recyclerView.rootView, getString(R.string.servidor_indisponivel), Snackbar.LENGTH_LONG).show()
             }
 
             override fun onFinishBackgroundExecute() {
-                Log.d("GetEventList", "Fim")
+                pb_loading_event.hide()
+                frameLayout.visibility = View.VISIBLE
                 recyclerView.adapter = SimpleItemRecyclerViewAdapter(activity, list, twoPane)
             }
         }
@@ -107,7 +90,6 @@ class EventListActivity : AppCompatActivity() {
                 } else {
                     val intent = Intent(v.context, EventDetailActivity::class.java).apply {
                         putExtra(EventDetailFragment.ARG_EVENT_ID, item.id)
-                            .putExtra(EventDetailFragment.ARG_EVENT_TITLE, item.title)
                     }
                     v.context.startActivity(intent)
                 }
@@ -122,7 +104,9 @@ class EventListActivity : AppCompatActivity() {
 
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
             val item = values[position]
-            holder.idView.text = item.id
+            GlideApp.with(holder.imageView.context)
+                .load(item.image)
+                .into(holder.imageView)
             holder.contentView.text = item.title
 
             with(holder.itemView) {
@@ -134,7 +118,7 @@ class EventListActivity : AppCompatActivity() {
         override fun getItemCount() = values.size
 
         inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-            val idView: TextView = view.findViewById(R.id.id_text)
+            val imageView: ImageView = view.findViewById(R.id.iv_event_background)
             val contentView: TextView = view.findViewById(R.id.content)
         }
     }
