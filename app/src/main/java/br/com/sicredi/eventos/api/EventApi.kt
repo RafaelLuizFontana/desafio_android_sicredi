@@ -1,6 +1,7 @@
 package br.com.sicredi.eventos.api
 
 import br.com.sicredi.eventos.model.Checkin
+import br.com.sicredi.eventos.model.CheckinResponse
 import br.com.sicredi.eventos.model.Event
 import retrofit2.Call
 import retrofit2.http.*
@@ -16,6 +17,6 @@ interface EventApi {
 
     @Headers("Content-Type: application/json")
     @POST("checkin")
-    fun checkin(@Body checkin: Checkin): Call<String>
+    fun checkin(@Body checkin: Checkin): Call<CheckinResponse>
 
 }

@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import br.com.sicredi.eventos.api.EventApiService
 import br.com.sicredi.eventos.glide.GlideApp
 import br.com.sicredi.eventos.model.Event
+import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_event_list.*
 
@@ -104,6 +105,7 @@ class EventListActivity : AppCompatActivity() {
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
             val item = values[position]
             GlideApp.with(holder.imageView.context)
+                .applyDefaultRequestOptions(RequestOptions().placeholder(R.drawable.glide_placeholder).error(R.drawable.glide_placeholder))
                 .load(item.image)
                 .into(holder.imageView)
             holder.contentView.text = item.title

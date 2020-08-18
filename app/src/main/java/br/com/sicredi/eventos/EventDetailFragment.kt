@@ -1,5 +1,6 @@
 package br.com.sicredi.eventos
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +9,7 @@ import androidx.fragment.app.Fragment
 import br.com.sicredi.eventos.api.EventApiService
 import br.com.sicredi.eventos.glide.GlideApp
 import br.com.sicredi.eventos.model.Event
+import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_event_detail.*
 import kotlinx.android.synthetic.main.event_detail.view.*
@@ -42,7 +44,7 @@ class EventDetailFragment : Fragment() {
                 override fun preStartBackgroundExecute() {
                     activity?.pb_loading_event_details?.show()
                     activity?.event_detail_container?.visibility = View.INVISIBLE
-                    activity?.bt_checkin?.visibility = View.INVISIBLE
+                    activity?.bt_checkin_form?.visibility = View.INVISIBLE
                 }
 
                 override fun onSuccessBackgroundExecute(result: Event?) {
@@ -51,6 +53,7 @@ class EventDetailFragment : Fragment() {
                         rootView.event_detail_title.text = event.title
                         activity!!.let { activity ->
                             GlideApp.with(rootView.context)
+                                .applyDefaultRequestOptions(RequestOptions().placeholder(R.drawable.glide_placeholder).error(R.drawable.glide_placeholder))
                                 .load(event.image)
                                 .into(activity.event_image)
                             event.date?.let { date ->
@@ -59,6 +62,15 @@ class EventDetailFragment : Fragment() {
                                 val format = SimpleDateFormat("dd/MM/yyyy HH:mm")
                                 rootView.event_detail_date.text = format.format(data) + "h"
                             }
+                            val onClickListener : View.OnClickListener
+                            onClickListener = View.OnClickListener { v ->
+                                val intent = Intent(v.context, CheckinActivity::class.java).apply {
+                                    putExtra(ARG_EVENT_ID, event.id)
+                                    putExtra(ARG_EVENT_TITLE, event.title)
+                                }
+                                v.context.startActivity(intent)
+                            }
+                            activity.bt_checkin_form.setOnClickListener(onClickListener)
                         }
                     }
                 }
@@ -71,7 +83,7 @@ class EventDetailFragment : Fragment() {
                 override fun onFinishBackgroundExecute() {
                     activity?.pb_loading_event_details?.hide()
                     activity?.event_detail_container?.visibility = View.VISIBLE
-                    activity?.bt_checkin?.visibility = View.VISIBLE
+                    activity?.bt_checkin_form?.visibility = View.VISIBLE
 
                 }
             }
@@ -81,6 +93,8 @@ class EventDetailFragment : Fragment() {
     }
 
     companion object {
-        const val ARG_EVENT_ID = "item_id"
+        const val ARG_EVENT_ID = "event_id"
+        const val ARG_EVENT_TITLE = "event_title"
+
     }
 }

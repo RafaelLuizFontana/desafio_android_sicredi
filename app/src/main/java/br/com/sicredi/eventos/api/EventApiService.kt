@@ -2,6 +2,7 @@ package br.com.sicredi.eventos.api
 
 import br.com.sicredi.eventos.ForegroundInterface
 import br.com.sicredi.eventos.model.Checkin
+import br.com.sicredi.eventos.model.CheckinResponse
 import br.com.sicredi.eventos.model.Event
 import retrofit2.Call
 import retrofit2.Callback
@@ -27,6 +28,7 @@ class EventApiService {
     }
 
     fun getEvent(eventId : String, foregroundInterface: ForegroundInterface<Event>?){
+        foregroundInterface?.preStartBackgroundExecute()
         val retrofit = ServiceBuilder.buildService(EventApi::class.java)
         retrofit.getEventDetail(eventId).enqueue(
             object : Callback<Event> {
@@ -43,22 +45,24 @@ class EventApiService {
         )
     }
 
-    fun checkin(checkin: Checkin, onResult: (String?) -> Unit){
+    fun checkin(checkin: Checkin, foregroundInterface: ForegroundInterface<CheckinResponse>?){
+        foregroundInterface?.preStartBackgroundExecute()
         val retrofit = ServiceBuilder.buildService(EventApi::class.java)
         retrofit.checkin(checkin).enqueue(
-            object : Callback<String> {
-                override fun onFailure(call: Call<String>, t: Throwable) {
-                    onResult(null)
+            object : Callback<CheckinResponse> {
+                override fun onFailure(call: Call<CheckinResponse>, t: Throwable) {
+                    foregroundInterface?.onFailureBackgroundExecute(t)
+                    foregroundInterface?.onFinishBackgroundExecute()
                 }
 
-                override fun onResponse(call: Call<String>, response: Response<String>) {
-                    val code = response.code()
-                    if (code != 200){
-                        onResult(null)
+                override fun onResponse(call: Call<CheckinResponse>, response: Response<CheckinResponse>) {
+                    val code = response.body()?.code
+                    if (code != "200"){
+                        foregroundInterface?.onFailureBackgroundExecute(Exception("Erro na requisição - código: " + code))
                     } else {
-                        val checkinDone = response.body()
-                        onResult(checkinDone)
+                        foregroundInterface?.onSuccessBackgroundExecute(response.body())
                     }
+                    foregroundInterface?.onFinishBackgroundExecute()
                 }
 
             }

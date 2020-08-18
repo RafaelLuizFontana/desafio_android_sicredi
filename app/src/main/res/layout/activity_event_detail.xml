@@ -6,21 +6,22 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/bt_checkin"
+        android:id="@+id/bt_checkin_form"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:text="@string/checkin"
         android:layout_alignParentBottom="true"
         android:visibility="gone"
-        tools:visibility="visible"/>
+        tools:visibility="visible"
+        android:padding="@dimen/text_margin"/>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/cl_event_details"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fitsSystemWindows="true"
-        android:layout_above="@id/bt_checkin">
+        android:layout_above="@id/bt_checkin_form">
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/app_bar"

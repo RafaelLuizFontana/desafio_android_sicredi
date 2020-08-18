@@ -5,6 +5,13 @@
     <string name="title_event_list">Eventos Sicred</string>
     <string name="title_event_detail">Detalhes do evento</string>
     <string name="foto_evento">foto:evento</string>
-    <string name="checkin">check in</string>
+    <string name="checkin">Check in</string>
     <string name="servidor_indisponivel">Servidor indisponível</string>
+    <string name="checkin_instructions">Para fazer o checkin no evento, precisamos de algumas informações:</string>
+    <string name="nome_obrigatorio">nome*</string>
+    <string name="e_mail_obrigatorio">e-mail*</string>
+    <string name="checkin_success">Checkin efetuado!</string>
+    <string name="error_required">campo obrigatório</string>
+    <string name="error_email">e-mail inválido</string>
+    <string name="checkin_invalid">evento inválido</string>
 </resources>
