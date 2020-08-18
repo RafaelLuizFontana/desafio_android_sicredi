@@ -57,7 +57,7 @@ class EventDetailFragment : Fragment() {
                                 .load(event.image)
                                 .into(activity.event_image)
                             event.date?.let { date ->
-                                //(activity as EventDetailActivity).setFloatClickListener(date)
+                                (activity as EventDetailActivity).setShareButtonClickListener(event)
                                 val data = Date(date)
                                 val format = SimpleDateFormat("dd/MM/yyyy HH:mm")
                                 rootView.event_detail_date.text = format.format(data) + "h"
