@@ -29,6 +29,7 @@ class EventDetailActivity : AppCompatActivity() {
         }
     }
 
+    /*
     fun setFloatClickListener(time : Long) {
         findViewById<FloatingActionButton>(R.id.fab).setOnClickListener { view ->
             val intent = Intent(Intent.ACTION_SEND).apply {
@@ -42,6 +43,7 @@ class EventDetailActivity : AppCompatActivity() {
             }
         }
     }
+    */
 
     override fun onOptionsItemSelected(item: MenuItem) =
         when (item.itemId) {

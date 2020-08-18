@@ -44,7 +44,7 @@ class EventDetailFragment : Fragment() {
                 override fun preStartBackgroundExecute() {
                     activity?.pb_loading_event_details?.show()
                     activity?.event_detail_container?.visibility = View.INVISIBLE
-                    activity?.bt_checkin_form?.visibility = View.INVISIBLE
+                    activity?.ll_button_group?.visibility = View.INVISIBLE
                 }
 
                 override fun onSuccessBackgroundExecute(result: Event?) {
@@ -57,7 +57,7 @@ class EventDetailFragment : Fragment() {
                                 .load(event.image)
                                 .into(activity.event_image)
                             event.date?.let { date ->
-                                (activity as EventDetailActivity).setFloatClickListener(date)
+                                //(activity as EventDetailActivity).setFloatClickListener(date)
                                 val data = Date(date)
                                 val format = SimpleDateFormat("dd/MM/yyyy HH:mm")
                                 rootView.event_detail_date.text = format.format(data) + "h"
@@ -83,7 +83,7 @@ class EventDetailFragment : Fragment() {
                 override fun onFinishBackgroundExecute() {
                     activity?.pb_loading_event_details?.hide()
                     activity?.event_detail_container?.visibility = View.VISIBLE
-                    activity?.bt_checkin_form?.visibility = View.VISIBLE
+                    activity?.ll_button_group?.visibility = View.VISIBLE
 
                 }
             }

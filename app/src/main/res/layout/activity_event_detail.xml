@@ -5,23 +5,41 @@
     android:layout_width="match_parent"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/bt_checkin_form"
+    <LinearLayout
+        android:id="@+id/ll_button_group"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:text="@string/checkin"
+        android:orientation="horizontal"
         android:layout_alignParentBottom="true"
+        android:layout_margin="16dp"
         android:visibility="gone"
-        tools:visibility="visible"
-        android:padding="@dimen/text_margin"/>
+        tools:visibility="visible">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/bt_share"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginRight="16dp"
+            android:text="@string/share"
+            android:padding="@dimen/text_margin"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/bt_checkin_form"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/checkin"
+            android:padding="@dimen/text_margin"/>
+
+    </LinearLayout>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/cl_event_details"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fitsSystemWindows="true"
-        android:layout_above="@id/bt_checkin_form">
+        android:layout_above="@id/ll_button_group">
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/app_bar"
@@ -77,16 +95,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_behavior="@string/appbar_scrolling_view_behavior" />
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical|start"
-            android:layout_margin="@dimen/fab_margin"
-            app:layout_anchor="@id/event_detail_container"
-            app:layout_anchorGravity="top|end"
-            app:srcCompat="@android:drawable/ic_menu_share" />
 
         <androidx.core.widget.ContentLoadingProgressBar
             android:id="@+id/pb_loading_event_details"

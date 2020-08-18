@@ -30,13 +30,13 @@ class CheckinActivity : AppCompatActivity() {
         }
 
         val nameClickListener : View.OnClickListener
-        nameClickListener = View.OnClickListener { v->
+        nameClickListener = View.OnClickListener {
             tl_nome.error = null
         }
         et_nome.setOnClickListener(nameClickListener)
 
         val emailClickListner : View.OnClickListener
-        emailClickListner = View.OnClickListener { v->
+        emailClickListner = View.OnClickListener {
             tl_email.error = null
         }
         et_email.setOnClickListener(emailClickListner)
