@@ -6,9 +6,12 @@ import android.os.Bundle
 import android.provider.CalendarContract
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import br.com.sicredi.eventos.model.Event
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.android.synthetic.main.activity_event_detail.*
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -36,20 +39,27 @@ class EventDetailActivity : AppCompatActivity() {
 
     fun setShareButtonClickListener(event : Event) {
         bt_share.setOnClickListener { view ->
-            val intent = Intent(Intent.ACTION_INSERT).apply {
-                data = CalendarContract.Events.CONTENT_URI
-                putExtra(CalendarContract.Events.TITLE, event.title)
-                event.latitude?.let { lat->
-                    event.longitude?.let{ lon->
-                        val geocoder : Geocoder
-                        geocoder = Geocoder(applicationContext, Locale.getDefault())
-                        putExtra(CalendarContract.Events.EVENT_LOCATION, geocoder.getFromLocation(lat, lon, 1).get(0).getAddressLine(0))
+            lifecycleScope.launch {
+                val geocoder: Geocoder
+                geocoder = Geocoder(applicationContext, Locale.getDefault())
+                val intent = Intent(Intent.ACTION_INSERT).apply {
+                    data = CalendarContract.Events.CONTENT_URI
+                    putExtra(CalendarContract.Events.TITLE, event.title)
+                    putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, event.date)
+                    event.latitude?.let { lat ->
+                        event.longitude?.let { lon ->
+                            try {
+                                val address = geocoder.getFromLocation(lat, lon, 1).get(0).getAddressLine(0)
+                                putExtra(CalendarContract.Events.EVENT_LOCATION, address)
+                            }catch (e: Exception){
+                                e.printStackTrace()
+                            }
+                        }
                     }
                 }
-                putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, event.date)
-            }
-            if (intent.resolveActivity(packageManager) != null){
-                startActivity(intent)
+                if (intent.resolveActivity(packageManager) != null) {
+                    startActivity(intent)
+                }
             }
         }
     }
